@@ -1,16 +1,14 @@
 <?php
-// dashboard.php
+// dashboard.php (PHP section remains unchanged)
 session_start();
 if (!isset($_SESSION['user_id'])) {
     header("Location: login.php");
     exit;
 }
 
-// Assuming you have a db.php for database connection
 require 'db.php';
 $user_id = $_SESSION['user_id'];
 
-// Fetch basic user data (optional, adjust based on your needs)
 $query = "SELECT username FROM users WHERE id = ?";
 $stmt = $conn->prepare($query);
 $stmt->bind_param("i", $user_id);
@@ -29,129 +27,145 @@ $username = $user['username'] ?? 'User';
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <style>
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f7f9;
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background-color: #ffffff;
             margin: 0;
             padding: 0;
+            line-height: 1.6;
         }
 
         /* Navigation Bar */
         .navbar {
-            background-color: #2c3e50;
-            padding: 15px 20px;
+            background-color: #e74c3c; /* Red */
+            /* padding: 20px; */
             display: flex;
             justify-content: space-between;
             align-items: center;
-            color: white;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            color: #ffffff;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
             position: sticky;
             top: 0;
+            height: 70px;
             z-index: 1000;
         }
 
         .navbar .brand {
-            font-size: 24px;
-            font-weight: bold;
+            font-size: 28px;
+            font-weight: 600;
+            letter-spacing: 1px;
         }
 
         .navbar .nav-links a {
-            color: white;
+            color: #ffffff;
             text-decoration: none;
-            margin: 0 15px;
+            margin: 0 10px;
             font-size: 16px;
-            transition: color 0.3s;
+            /* padding: 8px 12px; */
+            border-radius: 4px;
+            transition: all 0.3s ease;
         }
 
         .navbar .nav-links a:hover {
-            color: #3498db;
+            background-color: #f1c40f; /* Yellow */
+            color: #e74c3c; /* Red */
         }
 
         /* Container */
         .container {
-            max-width: 1200px;
-            margin: 30px auto;
-            padding: 20px;
+            max-width: 1300px;
+            margin: 40px auto;
+            padding: 25px;
         }
 
         h2 {
-            color: #2c3e50;
-            margin-bottom: 30px;
+            color: #27ae60; /* Green */
+            margin-bottom: 35px;
             text-align: center;
+            font-size: 32px;
+            font-weight: 600;
         }
 
         /* Cards */
         .cards {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-            margin-bottom: 30px;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
         }
 
         .card {
-            background-color: white;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            background-color: #ffffff;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
             text-align: center;
-            transition: transform 0.3s;
+            transition: all 0.3s ease;
+            border: 2px solid #f1c40f; /* Yellow border */
         }
 
         .card:hover {
-            transform: translateY(-5px);
+            transform: translateY(-8px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
         }
 
         .card i {
-            font-size: 30px;
-            color: #3498db;
-            margin-bottom: 10px;
+            font-size: 36px;
+            color: #27ae60; /* Green */
+            margin-bottom: 15px;
         }
 
         .card h3 {
-            color: #2c3e50;
-            margin: 10px 0;
+            color: #e74c3c; /* Red */
+            margin: 15px 0;
+            font-size: 22px;
         }
 
         .card p {
-            color: #7f8c8d;
-            font-size: 14px;
+            color: #666;
+            font-size: 15px;
+            margin-bottom: 15px;
         }
 
         /* Time Display */
         .time-display {
             text-align: right;
-            color: #7f8c8d;
-            font-size: 14px;
-            margin-bottom: 20px;
+            color: #27ae60; /* Green */
+            font-size: 16px;
+            margin-bottom: 25px;
+            font-style: italic;
         }
 
         /* Additional Content */
         .welcome-text {
-            background-color: #f9fbfc;
-            padding: 20px;
-            border-radius: 4px;
-            color: #34495e;
+            background-color: #fff9e6; /* Light Yellow */
+            padding: 25px;
+            border-radius: 8px;
+            color: #e74c3c; /* Red */
             text-align: center;
-            margin-bottom: 20px;
+            margin-bottom: 25px;
+            border-left: 5px solid #27ae60; /* Green */
         }
 
         .quick-links {
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
-            gap: 15px;
+            gap: 20px;
         }
 
         .quick-links a {
-            background-color: #3498db;
-            color: white;
-            padding: 10px 20px;
-            border-radius: 4px;
+            background-color: #f1c40f; /* Yellow */
+            color: #ffffff;
+            padding: 12px 25px;
+            border-radius: 6px;
             text-decoration: none;
-            transition: background-color 0.3s;
+            font-weight: 500;
+            transition: all 0.3s ease;
         }
 
         .quick-links a:hover {
-            background-color: #2980b9;
+            background-color: #27ae60; /* Green */
+            transform: scale(1.05);
         }
     </style>
 </head>
@@ -233,7 +247,7 @@ $username = $user['username'] ?? 'User';
             document.getElementById('current-time').textContent = timeString;
         }
         updateTime();
-        setInterval(updateTime, 1000); // Update every second
+        setInterval(updateTime, 1000);
     </script>
 </body>
 </html>
